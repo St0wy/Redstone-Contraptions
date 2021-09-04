@@ -1,0 +1,1 @@
+ALTER TABLE contraption DROP COLUMN itemsList;
