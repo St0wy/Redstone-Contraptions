@@ -16,6 +16,13 @@ table! {
 }
 
 table! {
+    contraptionstags (contraptions_id, tags_id) {
+        contraptions_id -> Int4,
+        tags_id -> Int4,
+    }
+}
+
+table! {
     items (id) {
         id -> Int4,
         name -> Varchar,
@@ -32,10 +39,13 @@ table! {
 
 joinable!(contraptionsitems -> contraptions (contraptions_id));
 joinable!(contraptionsitems -> items (items_id));
+joinable!(contraptionstags -> contraptions (contraptions_id));
+joinable!(contraptionstags -> items (tags_id));
 
 allow_tables_to_appear_in_same_query!(
     contraptions,
     contraptionsitems,
+    contraptionstags,
     items,
     tags,
 );
