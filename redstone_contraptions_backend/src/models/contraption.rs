@@ -1,22 +1,24 @@
 use crate::models::root::Context;
+use crate::schema::contraptions;
 use juniper::GraphQLInputObject;
 
-#[derive(Default, Debug)]
+#[derive(Default, Queryable)]
 pub struct Contraption {
     pub id: i32,
     pub name: String,
     pub description: String,
     pub image: Option<String>,
-    pub items_list: Option<String>,
+    pub itemslist: Option<String>,
 }
 
-#[derive(GraphQLInputObject)]
+#[derive(GraphQLInputObject, Insertable)]
 #[graphql(description = "Contraption Input")]
+#[table_name = "contraptions"]
 pub struct ContraptionInput {
     pub name: String,
     pub description: String,
     pub image: Option<String>,
-    pub items_list: Option<String>,
+    pub itemslist: Option<String>,
 }
 
 #[juniper::graphql_object(Context = Context)]
@@ -37,7 +39,7 @@ impl Contraption {
         &self.image
     }
 
-    fn items_list(&self) -> &Option<String> {
-        &self.items_list
+    fn itemslist(&self) -> &Option<String> {
+        &self.itemslist
     }
 }

@@ -1,6 +1,7 @@
 use super::contraption::{Contraption, ContraptionInput};
 use crate::db::Pool;
-use juniper::{EmptySubscription, FieldResult};
+use diesel::prelude::*;
+use juniper::{EmptySubscription, FieldError, FieldResult, Value};
 
 pub struct Context {
     pub dbpool: Pool,
@@ -14,13 +15,15 @@ pub struct QueryRoot;
 impl QueryRoot {
     #[graphql(description = "List of all contraptions")]
     fn contraptions(context: &Context) -> FieldResult<Vec<Contraption>> {
-        Ok(vec![Contraption {
-            id: 1,
-            name: "Ripe".to_string(),
-            description: String::from("Salut"),
-            image: Some(String::from("Salut")),
-            items_list: Some(String::from("Salut")),
-        }])
+        use crate::schema::contraptions::dsl::*;
+        let conn = context.dbpool.get().map_err(|_| {
+            FieldError::new("Could not open connection to the database", Value::null())
+        })?;
+
+        contraptions
+            .limit(100)
+            .load::<Contraption>(&conn)
+            .map_err(|_| FieldError::new("Error loading contraptions", Value::null()))
     }
 }
 
@@ -30,15 +33,18 @@ pub struct MutationRoot;
 impl MutationRoot {
     fn create_contraption(
         context: &Context,
-        contraption: ContraptionInput,
+        new_contraption: ContraptionInput,
     ) -> FieldResult<Contraption> {
-        Ok(Contraption {
-            id: 1,
-            name: String::from("Salut"),
-            description: String::from("Salut"),
-            image: Some(String::from("Salut")),
-            items_list: Some(String::from("Salut")),
-        })
+        use crate::schema::contraptions;
+
+        let conn = context.dbpool.get().map_err(|_| {
+            FieldError::new("Could not open connection to the database", Value::null())
+        })?;
+
+        diesel::insert_into(contraptions::table)
+            .values(&new_contraption)
+            .get_result::<Contraption>(&conn)
+            .map_err(|_| FieldError::new("Error creating contraption", Value::null()))
     }
 }
 

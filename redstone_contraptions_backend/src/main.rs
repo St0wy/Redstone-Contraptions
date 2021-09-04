@@ -1,6 +1,10 @@
+#[macro_use]
+extern crate diesel;
+
 mod db;
 mod handlers;
 mod models;
+mod schema;
 
 use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
