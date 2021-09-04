@@ -23,6 +23,13 @@ table! {
     }
 }
 
+table! {
+    tags (id) {
+        id -> Int4,
+        name -> Varchar,
+    }
+}
+
 joinable!(contraptionsitems -> contraptions (contraptions_id));
 joinable!(contraptionsitems -> items (items_id));
 
@@ -30,4 +37,5 @@ allow_tables_to_appear_in_same_query!(
     contraptions,
     contraptionsitems,
     items,
+    tags,
 );
