@@ -1,5 +1,5 @@
 table! {
-    contraptions (id) {
+    contraption (id) {
         id -> Int4,
         name -> Varchar,
         description -> Text,
@@ -9,21 +9,21 @@ table! {
 }
 
 table! {
-    contraptionsitems (contraptions_id, items_id) {
+    contraption_item (contraptions_id, items_id) {
         contraptions_id -> Int4,
         items_id -> Int4,
     }
 }
 
 table! {
-    contraptionstags (contraptions_id, tags_id) {
+    contraption_tag (contraptions_id, tags_id) {
         contraptions_id -> Int4,
         tags_id -> Int4,
     }
 }
 
 table! {
-    items (id) {
+    item (id) {
         id -> Int4,
         name -> Varchar,
         image -> Bytea,
@@ -31,21 +31,21 @@ table! {
 }
 
 table! {
-    tags (id) {
+    tag (id) {
         id -> Int4,
         name -> Varchar,
     }
 }
 
-joinable!(contraptionsitems -> contraptions (contraptions_id));
-joinable!(contraptionsitems -> items (items_id));
-joinable!(contraptionstags -> contraptions (contraptions_id));
-joinable!(contraptionstags -> items (tags_id));
+joinable!(contraption_item -> contraption (contraptions_id));
+joinable!(contraption_item -> item (items_id));
+joinable!(contraption_tag -> contraption (contraptions_id));
+joinable!(contraption_tag -> item (tags_id));
 
 allow_tables_to_appear_in_same_query!(
-    contraptions,
-    contraptionsitems,
-    contraptionstags,
-    items,
-    tags,
+    contraption,
+    contraption_item,
+    contraption_tag,
+    item,
+    tag,
 );
