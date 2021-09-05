@@ -3,7 +3,7 @@ table! {
         id -> Int4,
         name -> Varchar,
         description -> Text,
-        image -> Nullable<Text>,
+        image -> Nullable<Bytea>,
     }
 }
 
@@ -25,7 +25,7 @@ table! {
     item (id) {
         id -> Int4,
         name -> Varchar,
-        image -> Bytea,
+        image -> Nullable<Bytea>,
     }
 }
 

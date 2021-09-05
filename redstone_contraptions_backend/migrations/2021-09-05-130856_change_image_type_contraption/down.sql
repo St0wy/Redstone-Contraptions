@@ -1,0 +1,1 @@
+ALTER TABLE contraption ALTER COLUMN image TYPE VARCHAR;

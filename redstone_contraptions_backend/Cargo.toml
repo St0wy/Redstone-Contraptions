@@ -14,3 +14,4 @@ diesel = { version = "1.4.7", features = ["postgres", "r2d2"] }
 dotenv = "0.15.0"
 r2d2 = "0.8.9"
 serde_json = "1.0.67"
+base64 = "0.13.0"

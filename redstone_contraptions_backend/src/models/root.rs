@@ -15,12 +15,12 @@ pub struct QueryRoot;
 impl QueryRoot {
     #[graphql(description = "List of all contraptions")]
     fn contraptions(context: &Context) -> FieldResult<Vec<Contraption>> {
-        use crate::schema::contraptions::dsl::*;
+        use crate::schema::contraption::dsl::*;
         let conn = context.dbpool.get().map_err(|_| {
             FieldError::new("Could not open connection to the database", Value::null())
         })?;
 
-        contraptions
+        contraption
             .limit(100)
             .load::<Contraption>(&conn)
             .map_err(|_| FieldError::new("Error loading contraptions", Value::null()))
@@ -35,13 +35,13 @@ impl MutationRoot {
         context: &Context,
         new_contraption: ContraptionInput,
     ) -> FieldResult<Contraption> {
-        use crate::schema::contraptions;
+        use crate::schema::contraption;
 
         let conn = context.dbpool.get().map_err(|_| {
             FieldError::new("Could not open connection to the database", Value::null())
         })?;
 
-        diesel::insert_into(contraptions::table)
+        diesel::insert_into(contraption::table)
             .values(&new_contraption)
             .get_result::<Contraption>(&conn)
             .map_err(|_| FieldError::new("Error creating contraption", Value::null()))
