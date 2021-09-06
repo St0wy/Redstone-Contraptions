@@ -1,18 +1,15 @@
 use crate::models::root::Context;
-use crate::schema::{contraption, tag};
+use crate::schema::contraption;
 use juniper::GraphQLInputObject;
 extern crate base64;
-use crate::models::tag::Tag;
 
 #[derive(Default, Queryable, Identifiable, Associations)]
 #[table_name = "contraption"]
-#[has_many(tag)]
 pub struct Contraption {
     pub id: i32,
     pub name: String,
     pub description: String,
     pub image: Option<Vec<u8>>,
-    pub tags: Vec<Tag>,
 }
 
 #[derive(GraphQLInputObject, Insertable)]
@@ -44,9 +41,5 @@ impl Contraption {
             let img = self.image.as_ref().unwrap();
             Some(format!("data:image/png;base64,{}", base64::encode(img)))
         }
-    }
-
-    fn tags(&self) -> Vec<Tag> {
-        let taggers = Tag::belonging_to();
     }
 }

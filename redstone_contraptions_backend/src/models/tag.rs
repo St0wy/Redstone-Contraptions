@@ -4,7 +4,6 @@ use crate::schema::tag;
 use juniper::GraphQLInputObject;
 
 #[derive(Default, Queryable, Identifiable, Associations)]
-#[belongs_to(Contraption)]
 #[table_name = "tag"]
 pub struct Tag {
     pub id: i32,
