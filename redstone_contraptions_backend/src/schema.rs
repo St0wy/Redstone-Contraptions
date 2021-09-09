@@ -11,6 +11,7 @@ table! {
     contraption_item (contraption_id, item_id) {
         contraption_id -> Int4,
         item_id -> Int4,
+        quantity -> Int4,
     }
 }
 

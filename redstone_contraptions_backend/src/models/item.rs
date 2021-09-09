@@ -15,7 +15,6 @@ pub struct Item {
 #[table_name = "item"]
 pub struct ItemInput {
     pub name: String,
-    pub image: Option<Vec<u8>>,
 }
 
 #[juniper::graphql_object(Context = Context)]
@@ -28,7 +27,7 @@ impl Item {
         &self.name
     }
 
-    fn image(&self) -> &Option<String> {
+    fn image(&self) -> Option<String> {
         if self.image.is_none() {
             None
         } else {

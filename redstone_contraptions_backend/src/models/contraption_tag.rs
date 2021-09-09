@@ -2,8 +2,6 @@ use crate::models::contraption::Contraption;
 use crate::models::tag::Tag;
 use crate::schema::contraption_tag;
 
-use juniper::GraphQLInputObject;
-
 #[derive(Default, Queryable, Identifiable, Associations)]
 #[table_name = "contraption_tag"]
 #[primary_key(contraption_id, tag_id)]
@@ -14,7 +12,7 @@ pub struct ContraptionTag {
     pub tag_id: i32,
 }
 
-#[derive(GraphQLInputObject, Insertable)]
+#[derive(Insertable)]
 #[table_name = "contraption_tag"]
 pub struct ContraptionTagInput {
     pub contraption_id: i32,
