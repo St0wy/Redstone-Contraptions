@@ -39,7 +39,7 @@ table! {
 joinable!(contraption_item -> contraption (contraption_id));
 joinable!(contraption_item -> item (item_id));
 joinable!(contraption_tag -> contraption (contraption_id));
-joinable!(contraption_tag -> item (tag_id));
+joinable!(contraption_tag -> tag (tag_id));
 
 allow_tables_to_appear_in_same_query!(
     contraption,

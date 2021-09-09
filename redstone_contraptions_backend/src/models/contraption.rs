@@ -1,11 +1,12 @@
+use crate::diesel::BelongingToDsl;
 use crate::models::contraption_tag::ContraptionTag;
 use crate::models::root::Context;
 use crate::models::tag::Tag;
-use crate::schema::{contraption, contraption_tag};
-use juniper::GraphQLInputObject;
-extern crate base64;
-use crate::diesel::BelongingToDsl;
+use crate::schema::{contraption, contraption_tag, tag};
 use diesel::prelude::*;
+extern crate base64;
+use juniper::GraphQLInputObject;
+use juniper::{FieldError, FieldResult, Value};
 
 #[derive(Default, Queryable, Identifiable, Associations)]
 #[table_name = "contraption"]
@@ -47,7 +48,7 @@ impl Contraption {
         }
     }
 
-    fn tags(&self, context: &Context) -> Vec<Tag> {
+    fn tags(&self, context: &Context) -> FieldResult<Vec<Tag>> {
         use diesel::pg::expression::dsl::*;
 
         let conn = context.dbpool.get().map_err(|_| {
@@ -56,8 +57,9 @@ impl Contraption {
 
         let contraption_tag_ids =
             ContraptionTag::belonging_to(self).select(contraption_tag::tag_id);
-        tag.filter(tag::id.eq(any(contraption_tag_ids)))
-            .load::<Tag>(conn)
-            .expect("Could not load tags");
+
+        tag::table.filter(tag::id.eq(any(contraption_tag_ids)))
+            .load::<Tag>(&conn)
+            .map_err(|_| FieldError::new("Error loading tags", Value::null()))
     }
 }

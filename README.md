@@ -12,4 +12,3 @@ cargo install diesel_cli
 DATABASE_URL=postgres://postgres:password@localhost/redstone_contraptions
 ```
 4. Run `diesel setup`
-5. Run `diesel migration run`
