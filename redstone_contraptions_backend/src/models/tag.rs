@@ -1,4 +1,3 @@
-use crate::models::contraption::Contraption;
 use crate::models::root::Context;
 use crate::schema::tag;
 use juniper::GraphQLInputObject;
